@@ -41,4 +41,107 @@ WHERE name = "shardul"  //conditions-> = , != , >= , <= , > , <
 
 //Contraints is used to validate the data
 
-# sql-queries
+// IN operator
+SELECT * FROM user WHERE age  IN (20,30);
+
+//LIKE operator and Wildcard, used for searching.
+SELECT * FROM user  WHERE name LIKE "p_____%";
+
+//Between and Not Between operator, its use when we want range.
+SELECT * FROM user WHERE age BETWEEN 18 AND 40
+SELECT * FROM user WHERE age NOT BETWEEN 18 AND 40
+
+//Order By and Distinct
+SELECT * From user ORDER BY name ASC
+SELECT * From user ORDER BY name DESC
+
+SELECT DISTINCT address From user ORDER BY name ASC
+
+//Is Null and Is Not Null
+SELECT * FROM user WHERE age IS NULL
+SELECT * FROM user WHERE age IS NOT NULL
+
+//LIMIT, offset
+SELECT * FROM user LIMIT 5 offset 10 //offset is like skip
+
+//Aggregate
+SELECT count(id) FROM students WHERE age >= 18 AND age <= 30;
+SELECT sum(fees) FROM students
+SELECT avg(fees) FROM students
+SELECT min(fees) FROM students
+SELECT max(fees) FROM students
+
+//Update Statements
+UPDATE users
+SET  email = "test@gmail.com"
+WHERE name = "test"
+
+//Delete Statements
+DELETE FROM users WHERE id=7; 
+
+//Commit and Rollback (C,U,D)
+SELECT * FROM students
+COMMIT;
+UPDATE  students SET rollno="2016CS109" WHERE id=1;
+ROLLBACK;
+
+//Primary Key and Froegin Key Contraints
+//Primary Key
+CREATE TABLE  Post(
+    id INT NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL
+    comments VARCHAR(50),
+    PRIMARY  KEY (id),
+);
+//Foreign Key
+CREATE TABLE  Post(
+    id INT NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL
+    comments INT NOT NULL,
+    PRIMARY  KEY (id),
+    FOREIGN KEY (post) REFERENCES POST(id)
+);
+
+//Inner Join
+SELECT * FROM students 
+INNER JOIN cities ON students.city_id = cities.city_id;
+
+//Left Join, Right Join
+-left join keyword returns all records from left table  and the matched records from right table.
+SELECT * FROM students
+Left JOIN cities
+ON
+students.city_id = cities.city_id;
+
+-right join keyword returns all records from right table  and the matched records from left table.
+SELECT * FROM students
+Right JOIN cities
+ON
+students.city_id = cities.city_id;
+
+//Cross Join
+SELECT * FROM  students CROSS JOIN cities;
+
+//Join Mutliple Tables
+SELECT  * FROM students
+INNER JOIN FROM courses
+ON students.id = courses.id
+INNER JOIN FROM cities
+ON students.city_id = cities.id
+
+//SubQueries
+SELECT name FROM students
+WHERE city_id = (SELECT city_id From cities WHERE name = 'Agra')
+
+SELECT name FROM students
+WHERE EXISTS city_id = (SELECT city_id From cities WHERE name = 'Agra')
+
+SELECT name FROM students
+WHERE NOT EXISTS city_id = (SELECT city_id From cities WHERE name = 'Agra')
+
+//Group By Clause  & Having Clause
+SELECT city_id, city_name, COUNT(city_id) AS total FROM students
+INNER JOIN cities
+ON students.city_id = cities.id
+GROUP BY (city_id)
+HAVING COUNT(city_id) >= 2;
